@@ -14,11 +14,6 @@ file "wasi-vfs" do
   rm filename
 end
 
-file "wasmtime" do
-  `curl https://wasmtime.dev/install.sh -sSf | bash`
-  cp "#{ENV["HOME"]}/.wasmtime/bin/wasmtime", "wasmtime"
-end
-
 file "head-wasm32-unknown-wasi-full-js" do
   require "json"
   version = JSON.parse(File.read("package.json"))["dependencies"]["ruby-head-wasm-wasi"][1..]
@@ -30,15 +25,15 @@ file "head-wasm32-unknown-wasi-full-js" do
 end
 
 file "ruby.wasm" => ["head-wasm32-unknown-wasi-full-js"] do
-  mv "head-wasm32-unknown-wasi-full-js/usr/local/bin/ruby", "ruby.wasm"
+  cp "head-wasm32-unknown-wasi-full-js/usr/local/bin/ruby", "ruby.wasm"
 end
 
-file "src/app.wasm" => ["wasi-vfs", "wasmtime", "ruby.wasm", "lib/app.rb"] do
+file "src/app.wasm" => ["Gemfile.lock", "wasi-vfs", "ruby.wasm"] do
   require "bundler/setup"
-  cp_r $:.find { _1.include?("syntax_tree") }, "lib/lib"
+  cp_r $:.find { _1.include?("syntax_tree") }, "lib"
 
   `./wasi-vfs pack ruby.wasm --mapdir /lib::./lib --mapdir /usr::./head-wasm32-unknown-wasi-full-js/usr -o src/app.wasm`
-  rm_rf "lib/lib"
+  rm_rf "lib"
 end
 
 task default: ["src/app.wasm"]

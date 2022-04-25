@@ -65,7 +65,12 @@ export default async function createRuby() {
   // Once our virtual machine is booted, we're going to require the necessary
   // files to make it work. I'm not sure why I need to explicitly require
   // did_you_mean here, but it doesn't work without it.
-  ruby.eval(`require "did_you_mean"; require "json"; require_relative "/lib/app"`);
+  ruby.eval(`
+    require "did_you_mean"
+    require "json"
+    $:.unshift("/lib")
+    require_relative "/lib/syntax_tree"
+  `);
 
   return {
     // A function that calls through to PP to get the pretty-printed version of

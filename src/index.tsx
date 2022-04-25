@@ -19,7 +19,7 @@ const initialState: State = {
 
 type Action = (
   | { type: "changeSource", source: string }
-  | { type: "createRuby", ruby: Ruby }
+  | { type: "createRuby", ruby: Ruby, output: string }
   | { type: "evaluateSource", output: string }
   | { type: "syntaxErrorSource" }
 );
@@ -29,7 +29,7 @@ function reducer(state: State, action: Action): State {
     case "changeSource":
       return { ...state, state: "evaluating", source: action.source };
     case "createRuby":
-      return { ...state, state: "ready", ruby: action.ruby };
+      return { ...state, state: "ready", ruby: action.ruby, output: action.output };
     case "evaluateSource":
       return { ...state, state: "ready", output: action.output };
     case "syntaxErrorSource":
@@ -48,7 +48,7 @@ const App: React.FC = () => {
     switch (state.state) {
       case "initializing":
         createRuby().then((ruby) => {
-          dispatch({ type: "createRuby", ruby });
+          dispatch({ type: "createRuby", ruby, output: ruby.prettyPrint(state.source) });
         });
         return;
       case "evaluating":
