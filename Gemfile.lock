@@ -1,0 +1,17 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    rake (13.0.6)
+    syntax_tree (2.3.1)
+
+PLATFORMS
+  x86_64-darwin-21
+  x86_64-linux
+
+DEPENDENCIES
+  bundler
+  rake
+  syntax_tree
+
+BUNDLED WITH
+   2.3.6

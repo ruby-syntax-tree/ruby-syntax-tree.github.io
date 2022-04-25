@@ -1,0 +1,10 @@
+/docs/index.js*
+/head-wasm32-unknown-wasi-full-js/
+/lib/lib/
+/node_modules/
+/ruby.wasm
+/src/app.wasm
+/vendor/
+/wasi-vfs
+/wasmtime
+/yarn-error.log

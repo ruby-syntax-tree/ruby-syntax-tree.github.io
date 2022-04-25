@@ -1,0 +1,22 @@
+{
+  "license": "MIT",
+  "scripts": {
+    "build": "bin/build",
+    "serve": "bin/serve"
+  },
+  "dependencies": {
+    "@wasmer/wasi": "^0.12.0",
+    "@wasmer/wasmfs": "^0.12.0",
+    "path-browserify": "^1.0.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "ruby-head-wasm-wasi": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.27",
+    "@types/path-browserify": "^1.0.0",
+    "@types/react": "^18.0.6",
+    "@types/react-dom": "^18.0.2",
+    "esbuild": "^0.14.38"
+  }
+}
