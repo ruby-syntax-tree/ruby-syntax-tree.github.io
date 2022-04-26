@@ -1,9 +1,15 @@
-/docs/index.js*
+# Ignore everything in the output docs directory controlled by the build system.
+/docs/
+!/docs/index.css
+!/docs/index.html
+
+# Ignore everything to do with building the app.wasm file.
 /head-wasm32-unknown-wasi-full-js/
 /lib/
-/node_modules/
 /ruby.wasm
 /src/app.wasm
-/vendor/
 /wasi-vfs
+
+# Ignore all of the node dependencies and related files.
+/node_modules/
 /yarn-error.log
