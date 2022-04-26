@@ -18,10 +18,17 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Editor cols={cols} value={source} onChange={setSource} />
-      <Suspense fallback={<TreeFallback cols={cols} />}>
-        <Tree cols={cols} value={source} />
-      </Suspense>
+      <nav>
+        <h1>Syntax Tree</h1>
+        <a href="https://ruby-syntax-tree.github.io/syntax_tree">Docs</a>
+        <a href="https://github.com/ruby-syntax-tree/syntax_tree">Source</a>
+      </nav>
+      <main>
+        <Editor cols={cols} value={source} onChange={setSource} />
+        <Suspense fallback={<TreeFallback cols={cols} />}>
+          <Tree cols={cols} value={source} />
+        </Suspense>
+      </main>
     </>
   );
 };

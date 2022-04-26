@@ -5,6 +5,9 @@ import createRuby, { Ruby } from "./createRuby";
 // Create a singleton since we don't actually want there to be multiple virtual
 // machines running even if there are multiple Tree components.
 let ruby: Ruby = {
+  format(source) {
+    return source;
+  },
   prettyPrint(source) {
     return "Loading...";
   }

@@ -73,6 +73,15 @@ export default async function createRuby() {
   `);
 
   return {
+    // A function that calls through to the SyntaxTree.format function to get
+    // the pretty-printed version of the source.
+    format(source: string) {
+      const rubySource = `
+        SyntaxTree.format(JSON.parse(${JSON.stringify(JSON.stringify(source))}))
+      `;
+
+      return ruby.eval(rubySource).toString();
+    },
     // A function that calls through to PP to get the pretty-printed version of
     // the syntax tree.
     prettyPrint(source: string) {

@@ -1,13 +1,43 @@
 html, body {
+  font-family: "Source Serif Pro", serif;
+  font-size: 16px;
   height: 100vh;
   margin: 0;
 }
 
 #root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+nav {
+  background-color: #fafafa;
+  box-shadow: 0 1px 2px 0 #888;
+  box-sizing: border-box;
+  display: flex;
+  padding: 0.5em;
+}
+
+nav h1 {
+  font-size: 1.2em;
+  font-weight: initial;
+  margin: 0;
+}
+
+nav a {
+  vertical-align: middle;
+}
+
+nav h1, nav a {
+  padding: 0 1em;
+}
+
+main {
   box-sizing: border-box;
   display: flex;
   gap: 0.5em;
-  height: 100vh;
+  height: 100%;
   padding: 0.5em;
 }
 
