@@ -1,6 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import createRuby, { Ruby } from "./createRuby";
+
+// Create a singleton since we don't actually want there to be multiple virtual
+// machines running even if there are multiple Tree components.
+let ruby: Ruby = {
+  prettyPrint(source) {
+    return "Loading...";
+  }
+};
+
+// Track a state that represents where the ruby constant is at any given time.
+let rubyState: "initial" | "creating" | "ready" = "initial";
 
 function prettyPrint(ruby: Ruby, value: string) {
   try {
@@ -17,23 +28,36 @@ type TreeProps = {
 };
 
 const Tree: React.FC<TreeProps> = ({ cols, value }) => {
-  const [ruby, setRuby] = useState<Ruby>(null);
-  const [output, setOutput] = useState<string>("");
+  const [output, setOutput] = useState<string>(() => prettyPrint(ruby, value));
 
   useEffect(() => {
-    createRuby().then((ruby) => {
-      setRuby(ruby);
-      setOutput(prettyPrint(ruby, value));
-    });
-  }, []);
+    switch (rubyState) {
+      case "initial":
+        rubyState = "creating";
 
-  useMemo(() => {
-    if (ruby) {
-      setOutput(prettyPrint(ruby, value));
+        createRuby().then((newRuby) => {
+          ruby = newRuby;
+          rubyState = "ready";
+          setOutput(prettyPrint(ruby, value));
+        });
+
+        break;
+      case "creating":
+        break;
+      case "ready":
+        setOutput(prettyPrint(ruby, value));
+        break;
     }
-  }, [ruby, value]);
+  }, [value]);
 
-  return <textarea cols={cols} value={output} readOnly />;
+  return (
+    <textarea
+      className={rubyState != "ready" ? "loading" : ""}
+      cols={cols}
+      value={output}
+      readOnly
+    />
+  );
 };
 
 export default Tree;
