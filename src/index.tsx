@@ -1,6 +1,7 @@
 import React, { Suspense, useState } from "react";
 import { createRoot } from "react-dom/client";
 
+import initialSource from "./initialSource";
 import Editor from "./Editor";
 const Tree = React.lazy(() => import("./Tree"));
 
@@ -13,7 +14,7 @@ const TreeFallback: React.FC<TreeFallbackProps> = ({ cols }) => (
 );
 
 const App: React.FC = () => {
-  const [source, setSource] = useState<string>("1 + 2");
+  const [source, setSource] = useState<string>(initialSource);
   const cols = 80;
 
   return (
