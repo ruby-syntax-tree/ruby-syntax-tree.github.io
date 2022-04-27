@@ -1,6 +1,6 @@
 # ruby-syntax-tree.github.io
 
-This repository contains the code that backs <ruby-syntax-tree.github.io>. It is an interactive editor that is running [Syntax Tree](https://github.com/ruby-syntax-tree/syntax_tree) in the background to handle introspecting the underlying syntax tree and formatting. It uses Ruby's WASI bindings to do this all in the browser.
+This repository contains the code that backs [ruby-syntax-tree.github.io](https://ruby-syntax-tree.github.io). It is an interactive editor that is running [Syntax Tree](https://github.com/ruby-syntax-tree/syntax_tree) in the background to handle introspecting the underlying syntax tree and formatting. It uses Ruby's WASI bindings to do this all in the browser.
 
 ## Getting started
 
