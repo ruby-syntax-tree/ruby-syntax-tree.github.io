@@ -7,8 +7,16 @@
     <link rel="stylesheet" type="text/css" href="index.css">
   </head>
   <body>
-    <noscript>JavaScript must be enabled in order to run this application.</noscript>
-    <div id="root"></div>
+    <main>
+      <nav>
+        <h1>Syntax Tree</h1>
+        <a href="https://ruby-syntax-tree.github.io/syntax_tree">Docs</a>
+        <a href="https://github.com/ruby-syntax-tree/syntax_tree">Source</a>
+        <span><button type="button" id="format">Format</button></span>
+      </nav>
+      <textarea id="editor"></textarea>
+      <textarea id="tree" disabled readonly>Loading...</textarea>
+    </main>
     <script type="module" src="index.js"></script>
   </body>
 </html>

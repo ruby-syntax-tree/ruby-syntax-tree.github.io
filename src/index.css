@@ -5,7 +5,7 @@ html, body {
   margin: 0;
 }
 
-#root {
+main {
   display: grid;
   height: 100%;
   grid-template-columns: repeat(2, 1fr);

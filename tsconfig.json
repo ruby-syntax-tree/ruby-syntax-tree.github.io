@@ -9,5 +9,5 @@
     "noImplicitAny": true,
     "target": "es5"
   },
-  "files": ["src/index.tsx"]
+  "files": ["src/index.ts"]
 }
