@@ -1,6 +1,5 @@
 # Ignore everything in the output docs directory controlled by the build system.
 /docs/
-!/docs/index.css
 !/docs/index.html
 
 # Ignore everything to do with building the app.wasm file.

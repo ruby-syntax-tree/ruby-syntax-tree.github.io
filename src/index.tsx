@@ -2,20 +2,33 @@ import React, { Suspense, useState } from "react";
 import { createRoot } from "react-dom/client";
 
 import initialSource from "./initialSource";
-import Editor from "./Editor";
+const Editor = React.lazy(() => import("./Editor"));
 const Tree = React.lazy(() => import("./Tree"));
 
-type TreeFallbackProps = {
-  cols: number
+import "./index.css";
+
+// type TreeProps = { value: string };
+// const Tree: React.FC<TreeProps> = () => <textarea disabled readOnly value="Hello, world!" />;
+
+type EditorFallbackProps = {
+  value: string,
+  onChange: (value: string) => void
 };
 
-const TreeFallback: React.FC<TreeFallbackProps> = ({ cols }) => (
-  <textarea className="loading" cols={cols} readOnly>Loading...</textarea>
+const EditorFallback: React.FC<EditorFallbackProps> = ({ value, onChange }) => {
+  const onValueChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onChange(event.target.value);
+  };
+
+  return <textarea value={value} onChange={onValueChange} />;
+};
+
+const TreeFallback: React.FC = () => (
+  <textarea disabled readOnly value="Loading..." />
 );
 
 const App: React.FC = () => {
   const [source, setSource] = useState<string>(initialSource);
-  const cols = 80;
 
   return (
     <>
@@ -24,12 +37,12 @@ const App: React.FC = () => {
         <a href="https://ruby-syntax-tree.github.io/syntax_tree">Docs</a>
         <a href="https://github.com/ruby-syntax-tree/syntax_tree">Source</a>
       </nav>
-      <main>
-        <Editor cols={cols} value={source} onChange={setSource} />
-        <Suspense fallback={<TreeFallback cols={cols} />}>
-          <Tree cols={cols} value={source} />
-        </Suspense>
-      </main>
+      <Suspense fallback={<EditorFallback value={source} onChange={setSource} />}>
+        <Editor value={source} onChange={setSource} />
+      </Suspense>
+      <Suspense fallback={<TreeFallback />}>
+        <Tree value={source} />
+      </Suspense>
     </>
   );
 };

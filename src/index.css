@@ -6,9 +6,10 @@ html, body {
 }
 
 #root {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   height: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
 nav {
@@ -16,7 +17,9 @@ nav {
   box-shadow: 0 1px 2px 0 #888;
   box-sizing: border-box;
   display: flex;
+  grid-column: 1 / span 2;
   padding: 0.5em;
+  z-index: 1;
 }
 
 nav h1 {
@@ -33,20 +36,6 @@ nav h1, nav a {
   padding: 0 1em;
 }
 
-main {
-  box-sizing: border-box;
-  display: flex;
-  gap: 0.5em;
-  height: 100%;
-  padding: 0.5em;
-}
-
-textarea {
-  box-sizing: border-box;
-  height: 100%;
-  width: 100%;
-}
-
-.loading {
-  color: #ccc;
+.CodeMirror {
+  height: 100% !important;
 }

@@ -1,17 +1,37 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import CodeMirror from "codemirror";
+
+import "codemirror/mode/ruby/ruby";
+import "codemirror/lib/codemirror.css";
+import "codemirror/theme/xq-light.css";
 
 type EditorProps = {
-  cols: number,
   value: string,
   onChange: (value: string) => void
 };
 
-const Editor: React.FC<EditorProps> = ({ cols, value, onChange }) => {
-  const onSourceChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    onChange(event.target.value);
-  };
+const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
+  const elementRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<CodeMirror.Editor>(null);
 
-  return <textarea cols={cols} value={value} onChange={onSourceChange} />;
+  useEffect(() => {
+    if (elementRef.current && !editorRef.current) {
+      const editor = CodeMirror(elementRef.current, {
+        lineNumbers: true,
+        mode: "ruby",
+        value,
+        theme: "xq-light"
+      });
+
+      editor.on("change", () => {
+        onChange(editor.getDoc().getValue());
+      });
+
+      editorRef.current = editor;
+    }
+  });
+
+  return <div ref={elementRef} />;
 };
 
 export default Editor;

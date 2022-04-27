@@ -26,11 +26,10 @@ function prettyPrint(ruby: Ruby, value: string) {
 }
 
 type TreeProps = {
-  cols: number,
   value: string
 };
 
-const Tree: React.FC<TreeProps> = ({ cols, value }) => {
+const Tree: React.FC<TreeProps> = ({ value }) => {
   const [output, setOutput] = useState<string>(() => prettyPrint(ruby, value));
 
   useEffect(() => {
@@ -55,8 +54,8 @@ const Tree: React.FC<TreeProps> = ({ cols, value }) => {
 
   return (
     <textarea
-      className={rubyState != "ready" ? "loading" : ""}
-      cols={cols}
+      cols={80}
+      disabled={rubyState != "ready"}
       value={output}
       readOnly
     />
