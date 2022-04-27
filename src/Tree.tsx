@@ -2,17 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import createRuby, { Ruby } from "./createRuby";
 
-// Create a singleton since we don't actually want there to be multiple virtual
-// machines running even if there are multiple Tree components.
-let ruby: Ruby = {
-  format(source) {
-    return source;
-  },
-  prettyPrint(source) {
-    return "Loading...";
-  }
-};
-
 // Track a state that represents where the ruby constant is at any given time.
 let rubyState: "initial" | "creating" | "ready" = "initial";
 
@@ -26,11 +15,12 @@ function prettyPrint(ruby: Ruby, value: string) {
 }
 
 type TreeProps = {
+  rubyRef: React.MutableRefObject<Ruby>,
   value: string
 };
 
-const Tree: React.FC<TreeProps> = ({ value }) => {
-  const [output, setOutput] = useState<string>(() => prettyPrint(ruby, value));
+const Tree: React.FC<TreeProps> = ({ rubyRef, value }) => {
+  const [output, setOutput] = useState<string>(() => prettyPrint(rubyRef.current, value));
 
   useEffect(() => {
     switch (rubyState) {
@@ -38,16 +28,16 @@ const Tree: React.FC<TreeProps> = ({ value }) => {
         rubyState = "creating";
 
         createRuby().then((newRuby) => {
-          ruby = newRuby;
+          rubyRef.current = newRuby;
           rubyState = "ready";
-          setOutput(prettyPrint(ruby, value));
+          setOutput(prettyPrint(rubyRef.current, value));
         });
 
         break;
       case "creating":
         break;
       case "ready":
-        setOutput(prettyPrint(ruby, value));
+        setOutput(prettyPrint(rubyRef.current, value));
         break;
     }
   }, [value]);

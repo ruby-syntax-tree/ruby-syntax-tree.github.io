@@ -1,25 +1,25 @@
 import React, { useEffect, useRef } from "react";
-import CodeMirror from "codemirror";
+import CodeMirror, { Editor } from "codemirror";
 
 import "codemirror/mode/ruby/ruby";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/xq-light.css";
 
 type EditorProps = {
-  value: string,
+  editorRef: React.MutableRefObject<Editor>,
+  initialValue: string,
   onChange: (value: string) => void
 };
 
-const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
+const Editor: React.FC<EditorProps> = ({ editorRef, initialValue, onChange }) => {
   const elementRef = useRef<HTMLDivElement>(null);
-  const editorRef = useRef<CodeMirror.Editor>(null);
 
   useEffect(() => {
     if (elementRef.current && !editorRef.current) {
       const editor = CodeMirror(elementRef.current, {
         lineNumbers: true,
         mode: "ruby",
-        value,
+        value: initialValue,
         theme: "xq-light"
       });
 

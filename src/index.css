@@ -32,8 +32,12 @@ nav a {
   vertical-align: middle;
 }
 
-nav h1, nav a {
+nav h1, nav a, nav span {
   padding: 0 1em;
+}
+
+textarea {
+  font-size: 0.9em;
 }
 
 .CodeMirror {
