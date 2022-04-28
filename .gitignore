@@ -1,6 +1,6 @@
 # Ignore everything in the output docs directory controlled by the build system.
 /docs/
-!/docs/index.html
+!/docs/{index.html,favicon.svg}
 
 # Ignore everything to do with building the app.wasm file.
 /head-wasm32-unknown-wasi-full-js/
