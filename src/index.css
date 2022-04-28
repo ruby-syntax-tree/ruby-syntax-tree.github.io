@@ -38,6 +38,10 @@ nav h1, nav a, nav span {
 
 textarea {
   font-size: 0.9em;
+  overflow-wrap: normal;
+  overflow-x: scroll;
+  resize: none;
+  white-space: pre;
 }
 
 .CodeMirror {

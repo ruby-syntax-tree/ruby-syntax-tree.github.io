@@ -73,21 +73,28 @@ export default async function createRuby() {
   `);
 
   return {
+    // A function that disassembles the YARV instructions for the given source.
+    disasm(source: string) {
+      const jsonSource = JSON.stringify(JSON.stringify(source));
+      const rubySource = `RubyVM::InstructionSequence.compile(JSON.parse(${jsonSource})).disasm`;
+
+      return ruby.eval(rubySource).toString();
+    },
     // A function that calls through to the SyntaxTree.format function to get
     // the pretty-printed version of the source.
     format(source: string) {
-      const rubySource = `
-        SyntaxTree.format(JSON.parse(${JSON.stringify(JSON.stringify(source))}))
-      `;
+      const jsonSource = JSON.stringify(JSON.stringify(source));
+      const rubySource = `SyntaxTree.format(JSON.parse(${jsonSource}))`;
 
       return ruby.eval(rubySource).toString();
     },
     // A function that calls through to PP to get the pretty-printed version of
     // the syntax tree.
     prettyPrint(source: string) {
+      const jsonSource = JSON.stringify(JSON.stringify(source));
       const rubySource = `
         PP.format([], 80) do |q|
-          source = JSON.parse(${JSON.stringify(JSON.stringify(source))})
+          source = JSON.parse(${jsonSource})
           SyntaxTree.parse(source).pretty_print(q)
         end.join
       `;
