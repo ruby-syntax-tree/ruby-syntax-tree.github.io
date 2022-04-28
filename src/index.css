@@ -36,6 +36,11 @@ nav h1, nav a, nav span {
   padding: 0 1em;
 }
 
+.toggles {
+  margin-left: auto;
+  padding-right: 1em;
+}
+
 textarea {
   font-size: 0.9em;
   overflow-wrap: normal;

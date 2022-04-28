@@ -12,7 +12,12 @@
         <h1>Syntax Tree</h1>
         <a href="https://ruby-syntax-tree.github.io/syntax_tree">Docs</a>
         <a href="https://github.com/ruby-syntax-tree/syntax_tree">Source</a>
-        <span><button type="button" id="format">Format</button></span>
+        <span><button type="button" id="format" disabled>Format</button></span>
+
+        <div class="toggles">
+          <span><button type="button" value="prettyPrint" disabled>AST</button></span>
+          <span><button type="button" value="disasm" disabled>ISEQ</button></span>
+        </div>
       </nav>
       <textarea id="editor"># frozen_string_literal: true
 
@@ -73,7 +78,7 @@ module SyntaxTree
   end
 end
 </textarea>
-      <textarea id="tree" disabled readonly>Loading...</textarea>
+      <textarea id="output" disabled readonly>Loading...</textarea>
     </main>
     <script type="module" src="index.js"></script>
   </body>
