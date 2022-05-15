@@ -7,16 +7,16 @@ Promise.all([
   // We're going to load the editor asynchronously so that we can get to
   // first-paint faster. This works out nicely since we can use a textarea until
   // this chunk is loaded.
-  import("./CodeMirror").then(({ default: CodeMirror }) => {
+  import("./monacoLoader").then(async ({ default: loader }) => {
+    const monaco = await loader.init();
     const editor = document.getElementById("editor") as HTMLTextAreaElement;
     const newEditor = document.createElement("div");
     editor.replaceWith(newEditor);
-  
-    return CodeMirror(newEditor, {
-      lineNumbers: true,
-      mode: "ruby",
-      theme: "xq-light",
-      value: editor.value
+
+    return monaco.editor.create(
+      newEditor, {
+      value: editor.value,
+      language: 'ruby',
     });
   }),
   // We're going to load the Ruby VM chunk asynchronously because it is pretty
@@ -27,7 +27,7 @@ Promise.all([
   // First, grab a reference to the output element so that we can update it.
   // Then, set it initially to the output represented by the source.
   const output = document.getElementById("output") as HTMLTextAreaElement;
-  output.value = ruby.prettyPrint(editor.getDoc().getValue());
+  output.value = ruby.prettyPrint(editor.getValue());
   output.disabled = false;
 
   // This is the function that will be used to display the output from the
@@ -39,7 +39,7 @@ Promise.all([
     displayFunction = ruby[event.detail.kind];
 
     try {
-      output.value = displayFunction(editor.getDoc().getValue());
+      output.value = displayFunction(editor.getValue());
     } catch (error) {
       // For now, just ignoring the error. Eventually I'd like to make this mark
       // an error state on the editor to give feedback to the user.
@@ -78,9 +78,9 @@ Promise.all([
 
   // Attach to the editor and dispatch custom source-changed events whenever the
   // value is updated in the editor.
-  editor.on("change", () => {
+  editor.onDidChangeModelContent(() => {
     output.dispatchEvent(new CustomEvent<SourceChangedEvent>("source-changed", {
-      detail: { source: editor.getDoc().getValue() }
+      detail: { source: editor.getValue() }
     }));
   });
 
@@ -90,6 +90,6 @@ Promise.all([
   format.disabled = false;
 
   format.addEventListener("click", () => {
-    editor.getDoc().setValue(ruby.format(editor.getValue()));
+    editor.setValue(ruby.format(editor.getValue()));
   });
 });
