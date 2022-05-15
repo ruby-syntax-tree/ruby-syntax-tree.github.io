@@ -48,7 +48,3 @@ textarea {
   resize: none;
   white-space: pre;
 }
-
-.CodeMirror {
-  height: 100% !important;
-}
