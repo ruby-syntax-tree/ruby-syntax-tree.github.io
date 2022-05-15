@@ -13,10 +13,12 @@ Promise.all([
     const newEditor = document.createElement("div");
     editor.replaceWith(newEditor);
 
-    return monaco.editor.create(
-      newEditor, {
+    return monaco.editor.create(newEditor, {
       value: editor.value,
-      language: 'ruby',
+      language: "ruby",
+      minimap: {
+        enabled: false
+      }
     });
   }),
   // We're going to load the Ruby VM chunk asynchronously because it is pretty
@@ -86,7 +88,7 @@ Promise.all([
 
   // Attach to the format button to update the source whenever the button is
   // clicked.
-  const format = document.getElementById("format");
+  const format = document.getElementById("format") as HTMLButtonElement;
   format.disabled = false;
 
   format.addEventListener("click", () => {

@@ -1,3 +1,3 @@
-import loader from '@monaco-editor/loader';
+import loader from "@monaco-editor/loader";
 
-export default loader
+export default loader;
