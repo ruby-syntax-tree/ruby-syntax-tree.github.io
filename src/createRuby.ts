@@ -66,10 +66,12 @@ export default async function createRuby() {
   // files to make it work. I'm not sure why I need to explicitly require
   // did_you_mean here, but it doesn't work without it.
   ruby.eval(`
+    require "rubygems"
     require "did_you_mean"
     require "json"
     $:.unshift("/lib")
     require_relative "/lib/syntax_tree"
+    require_relative "/lib/prettier_print"
   `);
 
   return {
@@ -93,10 +95,8 @@ export default async function createRuby() {
     prettyPrint(source: string) {
       const jsonSource = JSON.stringify(JSON.stringify(source));
       const rubySource = `
-        PP.format([], 80) do |q|
-          source = JSON.parse(${jsonSource})
-          SyntaxTree.parse(source).pretty_print(q)
-        end.join
+        source = JSON.parse(${jsonSource})
+        SyntaxTree.parse(source).pretty_inspect
       `;
     
       return ruby.eval(rubySource).toString();
