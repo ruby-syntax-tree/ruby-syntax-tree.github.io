@@ -1,8 +1,10 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    prettier_print (1.2.0)
     rake (13.0.6)
-    syntax_tree (2.3.1)
+    syntax_tree (6.0.0)
+      prettier_print (>= 1.2.0)
 
 PLATFORMS
   ruby
@@ -12,7 +14,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   rake
-  syntax_tree
+  syntax_tree (~> 6.0)
 
 BUNDLED WITH
    2.3.6
