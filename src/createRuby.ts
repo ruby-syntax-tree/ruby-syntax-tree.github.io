@@ -83,6 +83,15 @@ export default async function createRuby() {
 
       return ruby.eval(rubySource).toString();
     },
+    mermaid(source: string) {
+      const jsonSource = JSON.stringify(JSON.stringify(source));
+      const rubySource = `
+        source = JSON.parse(${jsonSource})
+        SyntaxTree.parse(source).to_mermaid
+      `;
+
+      return ruby.eval(rubySource).toString();
+    },
     // A function that calls through to the SyntaxTree.format function to get
     // the pretty-printed version of the source.
     format(source: string) {
