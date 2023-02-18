@@ -69,6 +69,7 @@ export default async function createRuby() {
     require "rubygems"
     require "did_you_mean"
     require "json"
+    require "pp"
     $:.unshift("/lib")
     require_relative "/lib/syntax_tree"
     require_relative "/lib/prettier_print"
@@ -94,10 +95,7 @@ export default async function createRuby() {
     // the syntax tree.
     prettyPrint(source: string) {
       const jsonSource = JSON.stringify(JSON.stringify(source));
-      const rubySource = `
-        source = JSON.parse(${jsonSource})
-        SyntaxTree.parse(source).pretty_inspect
-      `;
+      const rubySource = `PP.pp(SyntaxTree.parse(JSON.parse(${jsonSource})), +"", 80)`;
     
       return ruby.eval(rubySource).toString();
     }
