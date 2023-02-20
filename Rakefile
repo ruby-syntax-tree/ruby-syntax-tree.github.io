@@ -19,7 +19,7 @@ file "head-wasm32-unknown-wasi-full-js" do
   version = JSON.parse(File.read("package.json"))["dependencies"]["ruby-head-wasm-wasi"][1..]
   filename = "ruby-head-wasm32-unknown-wasi-full-js.tar.gz"
 
-  `curl -LO https://github.com/ruby/ruby.wasm/releases/download/ruby-head-wasm-wasi-#{version}/ruby-head-wasm32-unknown-wasi-full-js.tar.gz`
+  `curl -LO https://github.com/ruby/ruby.wasm/releases/download/ruby-head-wasm-wasi-#{version}/#{filename}`
   `tar xfz #{filename}`
   rm filename
 end

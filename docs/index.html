@@ -16,20 +16,14 @@
         <span><button type="button" id="format" disabled>Format</button></span>
 
         <div class="toggles">
-          <select>
+          <select disabled>
             <option value="prettyPrint">AST</option>
             <option value="disasm">ISEQ</option>
             <option value="mermaid">GRAPH</option>
           </select>
         </div>
       </nav>
-      <textarea id="editor">
-SyntaxTree::Binary[
-  left: SyntaxTree::Int[value: "1"],
-  operator: :+,
-  right: SyntaxTree::Int[value: "1"]
-]
-      </textarea>
+      <textarea id="editor">1 + 2 * 3</textarea>
       <textarea id="output" disabled readonly>Loading...</textarea>
       <div id="graph-container" class="graph-container"></div>
     </main>

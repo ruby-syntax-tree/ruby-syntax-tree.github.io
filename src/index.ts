@@ -98,4 +98,6 @@ Promise.all([
   format.addEventListener("click", () => {
     editor.setValue(ruby.format(editor.getValue()));
   });
+
+  toggles.querySelector("select").removeAttribute('disabled');
 });
