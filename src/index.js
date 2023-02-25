@@ -1,6 +1,6 @@
 import "./index.css";
 
-await Promise.all([
+Promise.all([
   // We're going to load the editor asynchronously so that we can get to
   // first-paint faster. This works out nicely since we can use a textarea until
   // this chunk is loaded.
