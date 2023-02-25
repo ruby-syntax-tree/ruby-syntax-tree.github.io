@@ -23,9 +23,12 @@
           </select>
         </div>
       </nav>
-      <textarea id="editor">1 + 2 * 3</textarea>
+      <textarea id="editor">def fibonacci(n)
+  (n == 0 || n == 1) ? n : fibonacci(n - 1) + fibonacci(n - 2)
+end
+</textarea>
       <textarea id="output" disabled readonly>Loading...</textarea>
-      <div id="graph-container" class="graph-container"></div>
+      <div id="graph" class="graph">Loading...</div>
     </main>
     <script type="module" src="index.js"></script>
   </body>

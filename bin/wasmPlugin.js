@@ -1,9 +1,9 @@
-module.exports = {
+import path from 'node:path';
+import fs from 'node:fs';
+
+export default {
   name: 'wasm',
   setup(build) {
-    let path = require('path')
-    let fs = require('fs')
-
     // Resolve ".wasm" files to a path with a namespace
     build.onResolve({ filter: /\.wasm$/ }, args => {
       // If this is the import inside the stub module, import the
@@ -37,7 +37,7 @@ module.exports = {
     // binary itself is imported from a second virtual module.
     build.onLoad({ filter: /.*/, namespace: 'wasm-stub' }, async (args) => ({
       contents: `import wasm from ${JSON.stringify(args.path)}
-        export default (imports) => WebAssembly.instantiate(wasm, imports).then((result) => result.instance)`,
+        export default () => WebAssembly.compile(wasm)`,
     }))
 
     // Virtual modules in the "wasm-binary" namespace contain the
@@ -50,3 +50,4 @@ module.exports = {
     }))
   },
 }
+
