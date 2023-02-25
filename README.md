@@ -12,6 +12,8 @@ To run the application locally, you should:
 * `yarn serve` to start the local development server.
 * Open a browser at `localhost:8000`.
 
+_In order to build package using linux you should set the env CI=1 along with the rake execution. `CI=1 bundle exec rake`_
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/ruby-syntax-tree/syntax_tree.
