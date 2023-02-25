@@ -6,15 +6,14 @@ const getCleanContainer = () => {
   return div;
 }
 
-const render = (fn) => {
+const render = async (source) => {
   let container = getCleanContainer();
 
   container.setAttribute("style", "display: block;");
 
   mermaidjs.initialize({ startOnLoad: false });
-  mermaidjs.render('preparedScheme', fn(), (svg) => {
-    container.innerHTML = svg;
-  }, container);
+  const { svg } = await mermaidjs.render('preparedScheme', source);
+  container.innerHTML = svg;
 }
 
 const reset = () => getCleanContainer().setAttribute("style", "display: none;");

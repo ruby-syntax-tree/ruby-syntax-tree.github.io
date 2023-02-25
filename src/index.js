@@ -41,12 +41,9 @@ await Promise.all([
     try {
       let source = displayFunction(editor.getValue());
 
-      if (event.detail.kind === 'mermaid') {
-        mermaid.render(() => {
-          output.setAttribute("style", "display: none;");
-
-          return source;
-        });
+      if (event.detail.kind === "mermaid") {
+        output.setAttribute("style", "display: none;");
+        mermaid.render(source);
       } else {
         output.value = source;
         output.setAttribute("style", "");
@@ -73,9 +70,10 @@ await Promise.all([
   // turns out to be faster than handling the change event directly on the
   // editor since it blocks updates to the UI until the event handled returns.
   output.addEventListener("source-changed", (event) => {
-    // We may want to add some throttle here to avoid to much rerendering in our Graph
+    // We may want to add some throttle here to avoid to much rerendering in our
+    // graph.
     output.dispatchEvent(new CustomEvent("display-changed", {
-      detail: { kind: toggles.querySelector('select').value }
+      detail: { kind: toggles.querySelector("select").value }
     }));
   });
 
@@ -96,5 +94,5 @@ await Promise.all([
     editor.setValue(ruby.format(editor.getValue()));
   });
 
-  toggles.querySelector("select").removeAttribute('disabled');
+  toggles.querySelector("select").removeAttribute("disabled");
 });
