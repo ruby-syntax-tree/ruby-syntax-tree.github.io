@@ -1,15 +1,12 @@
 import "./index.css";
 
-type SourceChangedEvent = { source: string };
-type DisplayChangedEvent = { kind: "prettyPrint" | "disasm" | "mermaid" };
-
-Promise.all([
+await Promise.all([
   // We're going to load the editor asynchronously so that we can get to
   // first-paint faster. This works out nicely since we can use a textarea until
   // this chunk is loaded.
   import("./monacoLoader").then(async ({ default: loader }) => {
     const monaco = await loader.init();
-    const editor = document.getElementById("editor") as HTMLTextAreaElement;
+    const editor = document.getElementById("editor");
     const newEditor = document.createElement("div");
     editor.replaceWith(newEditor);
 
@@ -21,15 +18,15 @@ Promise.all([
       }
     });
   }),
-  import("./mermaid-js"),
+  import("./mermaid"),
   // We're going to load the Ruby VM chunk asynchronously because it is pretty
   // dang huge (> 40Mb). In the meantime the textarea that is holding the place
   // of the actual functional one is just going to display "Loading...".
   import("./createRuby").then(({ default: createRuby }) => createRuby())
-]).then(([editor, mermaidjs, ruby]) => {
+]).then(([editor, mermaid, ruby]) => {
   // First, grab a reference to the output element so that we can update it.
   // Then, set it initially to the output represented by the source.
-  const output = document.getElementById("output") as HTMLTextAreaElement;
+  const output = document.getElementById("output");
   output.value = ruby.prettyPrint(editor.getValue());
   output.disabled = false;
 
@@ -38,14 +35,14 @@ Promise.all([
   let displayFunction = ruby.prettyPrint;
 
   // Handle a custom event here for if the display option changed.
-  output.addEventListener("display-changed", (event: CustomEvent<DisplayChangedEvent>) => {
+  output.addEventListener("display-changed", (event) => {
     displayFunction = ruby[event.detail.kind];
 
     try {
       let source = displayFunction(editor.getValue());
 
       if (event.detail.kind === 'mermaid') {
-        mermaidjs.render(() => {
+        mermaid.render(() => {
           output.setAttribute("style", "display: none;");
 
           return source;
@@ -54,7 +51,7 @@ Promise.all([
         output.value = source;
         output.setAttribute("style", "");
 
-        mermaidjs.reset();
+        mermaid.reset();
       }
     } catch (error) {
       // For now, just ignoring the error. Eventually I'd like to make this mark
@@ -66,33 +63,33 @@ Promise.all([
   // event information.
   const toggles = document.getElementsByClassName("toggles")[0];
 
-  toggles.querySelector("select").addEventListener('change', (e) => {
-    output.dispatchEvent(new CustomEvent<DisplayChangedEvent>("display-changed", {
-      detail: { kind: e.target.value as DisplayChangedEvent["kind"] }
+  toggles.querySelector("select").addEventListener('change', (event) => {
+    output.dispatchEvent(new CustomEvent("display-changed", {
+      detail: { kind: event.target.value }
     }));
   });
 
   // We're going to handle updates to the source through a custom event. This
   // turns out to be faster than handling the change event directly on the
   // editor since it blocks updates to the UI until the event handled returns.
-  output.addEventListener("source-changed", (event: CustomEvent<SourceChangedEvent>) => {
+  output.addEventListener("source-changed", (event) => {
     // We may want to add some throttle here to avoid to much rerendering in our Graph
-    output.dispatchEvent(new CustomEvent<DisplayChangedEvent>("display-changed", {
-      detail: { kind: toggles.querySelector('select').value as DisplayChangedEvent["kind"] }
+    output.dispatchEvent(new CustomEvent("display-changed", {
+      detail: { kind: toggles.querySelector('select').value }
     }));
   });
 
   // Attach to the editor and dispatch custom source-changed events whenever the
   // value is updated in the editor.
   editor.onDidChangeModelContent(() => {
-    output.dispatchEvent(new CustomEvent<SourceChangedEvent>("source-changed", {
+    output.dispatchEvent(new CustomEvent("source-changed", {
       detail: { source: editor.getValue() }
     }));
   });
 
   // Attach to the format button to update the source whenever the button is
   // clicked.
-  const format = document.getElementById("format") as HTMLButtonElement;
+  const format = document.getElementById("format");
   format.disabled = false;
 
   format.addEventListener("click", () => {

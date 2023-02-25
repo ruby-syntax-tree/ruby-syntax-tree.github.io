@@ -1,12 +1,8 @@
-import { WASI } from "@wasmer/wasi";
-import { WasmFs } from "@wasmer/wasmfs";
-import path from "path-browserify";
-import { DefaultRubyVM } from "ruby-head-wasm-wasi/dist/browser.esm.js";
-
-import load from "./app.wasm";
+import { DefaultRubyVM } from "ruby-head-wasm-wasi/dist/browser.esm";
+import app from "./app.wasm";
 
 export default async function createRuby() {
-  const { vm } = await DefaultRubyVM(await load())
+  const { vm } = await DefaultRubyVM(await app());
 
   // Once our virtual machine is booted, we're going to require the necessary
   // files to make it work. I'm not sure why I need to explicitly require
@@ -23,24 +19,21 @@ export default async function createRuby() {
 
   return {
     // A function that disassembles the YARV instructions for the given source.
-    disasm(source: string) {
+    disasm(source) {
       const jsonSource = JSON.stringify(JSON.stringify(source));
       const rubySource = `RubyVM::InstructionSequence.compile(JSON.parse(${jsonSource})).disasm`;
 
       return vm.eval(rubySource).toString();
     },
-    mermaid(source: string) {
+    mermaid(source) {
       const jsonSource = JSON.stringify(JSON.stringify(source));
-      const rubySource = `
-        source = JSON.parse(${jsonSource})
-        SyntaxTree.parse(source).to_mermaid
-      `;
+      const rubySource = `SyntaxTree.parse(JSON.parse(${jsonSource})).to_mermaid`;
 
       return vm.eval(rubySource).toString();
     },
     // A function that calls through to the SyntaxTree.format function to get
     // the pretty-printed version of the source.
-    format(source: string) {
+    format(source) {
       const jsonSource = JSON.stringify(JSON.stringify(source));
       const rubySource = `SyntaxTree.format(JSON.parse(${jsonSource}))`;
 
@@ -48,7 +41,7 @@ export default async function createRuby() {
     },
     // A function that calls through to PP to get the pretty-printed version of
     // the syntax tree.
-    prettyPrint(source: string) {
+    prettyPrint(source) {
       const jsonSource = JSON.stringify(JSON.stringify(source));
       const rubySource = `PP.pp(SyntaxTree.parse(JSON.parse(${jsonSource})), +"", 80)`;
     
@@ -56,5 +49,3 @@ export default async function createRuby() {
     }
   };
 };
-
-export type Ruby = Awaited<ReturnType<typeof createRuby>>;

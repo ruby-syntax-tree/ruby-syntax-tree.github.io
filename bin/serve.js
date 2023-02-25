@@ -1,8 +1,8 @@
 import esbuild from "esbuild";
 import url from "url";
-import wasmPlugin from "./wasmPlugin.mjs";
+import wasmPlugin from "./wasmPlugin.js";
 
-const entryPoint = url.fileURLToPath(new URL("../src/index.ts", import.meta.url));
+const entryPoint = url.fileURLToPath(new URL("../src/index", import.meta.url));
 const outdir = url.fileURLToPath(new URL("../docs", import.meta.url));
 
 const ctx = await esbuild.context({

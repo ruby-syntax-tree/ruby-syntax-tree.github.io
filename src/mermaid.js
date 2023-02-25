@@ -2,13 +2,11 @@ import mermaidjs from "mermaid";
 
 const getCleanContainer = () => {
   const div = document.querySelector("#graph-container");
-  
-  div.innerHTML = '';
-
+  div.innerHTML = "";
   return div;
 }
 
-const render = (fn: Function) => {
+const render = (fn) => {
   let container = getCleanContainer();
 
   container.setAttribute("style", "display: block;");
