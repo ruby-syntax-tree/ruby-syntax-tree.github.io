@@ -53,7 +53,7 @@ select {
   min-width: 15em;
 }
 
-.graph-container {
+.graph {
   text-align: center;
   overflow-y: scroll;
   overflow-x: scroll;

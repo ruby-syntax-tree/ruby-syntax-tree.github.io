@@ -18,7 +18,13 @@ await Promise.all([
       }
     });
   }),
-  import("./mermaid"),
+  // We're going to load mermaid asynchronously because it is a large module.
+  // When it gets loaded we'll tell it not to run on load and then we'll use it
+  // when the user selects the graph.
+  import("./mermaid").then(({ default: mermaid }) => {
+    mermaid.initialize({ startOnLoad: false });
+    return mermaid;
+  }),
   // We're going to load the Ruby VM chunk asynchronously because it is pretty
   // dang huge (> 40Mb). In the meantime the textarea that is holding the place
   // of the actual functional one is just going to display "Loading...".
@@ -29,6 +35,9 @@ await Promise.all([
   const output = document.getElementById("output");
   output.value = ruby.prettyPrint(editor.getValue());
   output.disabled = false;
+
+  // Next, grab a reference to the graph container element.
+  const graph = document.getElementById("graph");
 
   // This is the function that will be used to display the output from the
   // source.
@@ -43,12 +52,17 @@ await Promise.all([
 
       if (event.detail.kind === "mermaid") {
         output.setAttribute("style", "display: none;");
-        mermaid.render(source);
+        graph.setAttribute("style", "text-align: left;")
+        graph.innerHTML = "Loading..."
+
+        mermaid.render("preparedScheme", source).then(({ svg }) => {
+          graph.innerHTML = svg;
+          graph.setAttribute("style", "display: block; text-align: center;");
+        });
       } else {
         output.value = source;
         output.setAttribute("style", "");
-
-        mermaid.reset();
+        graph.setAttribute("style", "display: none;");
       }
     } catch (error) {
       // For now, just ignoring the error. Eventually I'd like to make this mark
