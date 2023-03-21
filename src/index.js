@@ -50,7 +50,7 @@ Promise.all([
     try {
       let source = displayFunction(editor.getValue());
 
-      if (event.detail.kind === "mermaid") {
+      if (event.detail.kind === "mermaid" || event.detail.kind === "seaOfNodes") {
         output.setAttribute("style", "display: none;");
         graph.setAttribute("style", "text-align: left;")
         graph.innerHTML = "Loading..."
