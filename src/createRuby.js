@@ -25,17 +25,17 @@ export default async function createRuby() {
 
       return vm.eval(rubySource).toString();
     },
-    mermaid(source) {
-      const jsonSource = JSON.stringify(JSON.stringify(source));
-      const rubySource = `SyntaxTree.parse(JSON.parse(${jsonSource})).to_mermaid`;
-
-      return vm.eval(rubySource).toString();
-    },
     // A function that calls through to the SyntaxTree.format function to get
     // the pretty-printed version of the source.
     format(source) {
       const jsonSource = JSON.stringify(JSON.stringify(source));
       const rubySource = `SyntaxTree.format(JSON.parse(${jsonSource}))`;
+
+      return vm.eval(rubySource).toString();
+    },
+    mermaid(source) {
+      const jsonSource = JSON.stringify(JSON.stringify(source));
+      const rubySource = `SyntaxTree.parse(JSON.parse(${jsonSource})).to_mermaid`;
 
       return vm.eval(rubySource).toString();
     },
@@ -45,6 +45,17 @@ export default async function createRuby() {
       const jsonSource = JSON.stringify(JSON.stringify(source));
       const rubySource = `PP.pp(SyntaxTree.parse(JSON.parse(${jsonSource})), +"", 80)`;
     
+      return vm.eval(rubySource).toString();
+    },
+    // A function to print the current sea of nodes
+    seaOfNodes(source) {
+      const jsonSource = JSON.stringify(JSON.stringify(source));
+      const rubySource = `
+        iseq = RubyVM::InstructionSequence.compile(JSON.parse(${jsonSource}))
+        iseq = SyntaxTree::YARV::InstructionSequence.from(iseq.to_a)
+        iseq.to_son.to_mermaid
+      `;
+
       return vm.eval(rubySource).toString();
     }
   };
