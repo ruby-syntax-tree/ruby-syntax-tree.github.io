@@ -47,7 +47,7 @@ export default async function createRuby() {
     
       return vm.eval(rubySource).toString();
     },
-    // A function to print the current YARV execution
+    // A function to print the current sea of nodes
     seaOfNodes(source) {
       const jsonSource = JSON.stringify(JSON.stringify(source));
       const rubySource = `
