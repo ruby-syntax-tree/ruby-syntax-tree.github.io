@@ -47,16 +47,16 @@ export default async function createRuby() {
     
       return vm.eval(rubySource).toString();
     },
-		// A function to print the current YARV execution
-		seaOfNodes(source) {
+    // A function to print the current YARV execution
+    seaOfNodes(source) {
       const jsonSource = JSON.stringify(JSON.stringify(source));
       const rubySource = `
-				iseq = RubyVM::InstructionSequence.compile(JSON.parse(${jsonSource}))
-				iseq = SyntaxTree::YARV::InstructionSequence.from(iseq.to_a)
-				iseq.to_son.to_mermaid
-			`;
+        iseq = RubyVM::InstructionSequence.compile(JSON.parse(${jsonSource}))
+        iseq = SyntaxTree::YARV::InstructionSequence.from(iseq.to_a)
+        iseq.to_son.to_mermaid
+      `;
 
       return vm.eval(rubySource).toString();
-		}
+    }
   };
 };
