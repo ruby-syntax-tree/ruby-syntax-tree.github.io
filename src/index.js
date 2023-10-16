@@ -29,7 +29,7 @@ Promise.all([
   // dang huge (> 40Mb). In the meantime the textarea that is holding the place
   // of the actual functional one is just going to display "Loading...".
   import("./createRuby").then(({ default: createRuby }) => createRuby())
-]).then(async ([editor, mermaid, ruby]) => {
+]).then(([editor, mermaid, ruby]) => {
   // First, grab a reference to the output element so that we can update it.
   // Then, set it initially to the output represented by the source.
   const output = document.getElementById("output");
@@ -113,13 +113,10 @@ Promise.all([
   // fetch code from URL
   const params = new URLSearchParams(document.location.search)
   const sourceURL = params.get('source')
-  try {
-    const response = await fetch(new URL(sourceURL))
-    if (response.status === 200) {
-      const data = await response.text()
-      editor.setValue(data)
-    }
-  } catch (error) {
-    console.error(error)
+  if (sourceURL) {
+    fetch(new URL(sourceURL))
+    .then(response => response.text())
+    .then(data => editor.setValue(data))
+    .catch(error => console.error(error))
   }
 });
