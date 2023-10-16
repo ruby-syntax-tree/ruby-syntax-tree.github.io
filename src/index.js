@@ -29,7 +29,7 @@ Promise.all([
   // dang huge (> 40Mb). In the meantime the textarea that is holding the place
   // of the actual functional one is just going to display "Loading...".
   import("./createRuby").then(({ default: createRuby }) => createRuby())
-]).then(([editor, mermaid, ruby]) => {
+]).then(async ([editor, mermaid, ruby]) => {
   // First, grab a reference to the output element so that we can update it.
   // Then, set it initially to the output represented by the source.
   const output = document.getElementById("output");
