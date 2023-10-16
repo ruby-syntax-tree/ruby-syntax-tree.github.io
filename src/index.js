@@ -109,4 +109,17 @@ Promise.all([
   });
 
   toggles.querySelector("select").removeAttribute("disabled");
+
+  // fetch code from URL
+  const params = new URLSearchParams(document.location.search)
+  const sourceURL = params.get('source')
+  try {
+    const response = await fetch(new URL(sourceURL))
+    if (response.status === 200) {
+      const data = await response.text()
+      editor.setValue(data)
+    }
+  } catch (error) {
+    console.error(error)
+  }
 });
